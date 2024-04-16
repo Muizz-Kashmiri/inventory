@@ -13,8 +13,6 @@ table_name = 'Songs'
 # Add CORS middleware
 origins = [
     "*"
-    # "http://0.0.0.0:8080", # React app served from this origin
-    # Add any other origins you want to allow here
 ]
 
 app.add_middleware(
@@ -24,7 +22,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 
 def get_dynamodb_client():
@@ -40,7 +37,7 @@ def get_dynamodb_client():
         # Check if the table exists in us-east-2
         dynamodb.describe_table(TableName=table_name)
         print("Connected to us-east-2")
-        return dynamodb
+        return dynamodb, 'us-east-2'
     except ClientError:
         # If us-east-2 is not available or table doesn't exist, fallback to us-east-1
         dynamodb = boto3.client(
@@ -50,11 +47,10 @@ def get_dynamodb_client():
             aws_secret_access_key=os.getenv("secret_access_key")
         )
         print("Connected to us-east-1")
-        return dynamodb
+        return dynamodb, 'us-east-1'
 
 
-
-dynamodb = get_dynamodb_client()
+dynamodb, connected_region = get_dynamodb_client()
 
 
 def get_song(song_name):
@@ -121,7 +117,12 @@ async def add_song_data(Name: str = Body(...), Artist: str = Body(...), ReleaseY
         return {"message": "Failed to add song"}
 
 
+@app.get("/connected_region")
+async def get_connected_region():
+    return {"region": connected_region}
+
+
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=3000)
