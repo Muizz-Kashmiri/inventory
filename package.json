@@ -11,14 +11,12 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-scripts": "5.0.1",
-    "web-vitals": "^2.1.4"
-  },
-  "dependencies": {
+    "web-vitals": "^2.1.4",
     "express": "^4.17.1",
     "cors": "^2.8.5",
     "body-parser": "^1.19.0",
     "aws-sdk": "^2.1113.0"
-  }
+  },
   "scripts": {
     "start": "PORT=8080 react-scripts start",
     "starting2": "PORT=3000 react-scripts start",
