@@ -16,7 +16,7 @@ function App() {
   
   const fetchConnectedRegion = async () => {
     try {
-      const response = await axios.get('http://{{EDUCATIVE_LIVE_VM_ALT_SERVER_URL}}/connected_region');
+      const response = await axios.get('https://{{EDUCATIVE_LIVE_VM_ALT_SERVER_URL}}/connected_region');
       setConnectedRegion(response.data.region);
     } catch (error) {
       console.error('Failed to fetch connected region:', error);
@@ -25,7 +25,7 @@ function App() {
 
   const handleGetSong = async () => {
     try {
-      const response = await axios.get(`http://{{EDUCATIVE_LIVE_VM_ALT_SERVER_URL}}/songs/${songName}`);
+      const response = await axios.get(`https://{{EDUCATIVE_LIVE_VM_ALT_SERVER_URL}}/songs/${songName}`);
       setSongs(response.data); // Update songs state with fetched data
       setMessage(''); // Clear any previous message
     } catch (error) {
@@ -35,7 +35,7 @@ function App() {
 
   const handleAddSong = async () => {
     try {
-      await axios.post('http://{{EDUCATIVE_LIVE_VM_ALT_SERVER_URL}}/songs', { songName, artistName, yearOfRelease });
+      await axios.post('https://{{EDUCATIVE_LIVE_VM_ALT_SERVER_URL}}/songs', { songName, artistName, yearOfRelease });
       setMessage('Song added successfully');
     } catch (error) {
       setMessage('Failed to add song');
