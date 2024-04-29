@@ -50,10 +50,10 @@ const getSong = async (songName) => {
         const params = {
             TableName: table_name,
             Key: {
-                'Name': songName
+                'Name': { S: songName } // Assuming 'Name' is a string attribute
             }
         };
-        const data = await dynamodb.get(params).promise();
+        const data = await dynamodb.getItem(params).promise();
         return data.Item;
     } catch (error) {
         console.error("Error getting song:", error);
@@ -67,12 +67,13 @@ const addSong = async (name, artist, releaseYear) => {
         const params = {
             TableName: table_name,
             Item: {
-                'Name': name,
-                'Artist': artist,
-                'ReleaseYear': releaseYear
+                'Name': { S: name }, // Assuming 'Name' is a string attribute
+                'Artist': { S: artist }, // Assuming 'Artist' is a string attribute
+                'ReleaseYear': { S: releaseYear } // Assuming 'ReleaseYear' is a string attribute
             }
         };
-        await dynamodb.put(params).promise();
+        await dynamodb.putItem(params).promise(); // Changed put to putItem
+        console.log("Song added successfully");
         return true;
     } catch (error) {
         console.error("Error adding song:", error);
